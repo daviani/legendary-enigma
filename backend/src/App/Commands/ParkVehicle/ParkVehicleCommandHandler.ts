@@ -11,30 +11,30 @@ export class ParkVehicleCommandHandler {
     private readonly vehicleRepository: VehicleRepository,
   ) {}
 
-  handle(command: ParkVehicleCommand): void {
-    const fleet: Fleet | null = this.fleetRepository.findById(command.fleetId)
-    const location = new Location(
-      command.latitude,
-      command.longitude,
-      command.altitude,
+  async handle(command: ParkVehicleCommand): Promise<void> {
+    const fleet: Fleet | null = await this.fleetRepository.findById(
+      command.fleetId,
     )
-    let vehicle: Vehicle | null = this.vehicleRepository.findByPlateNumber(
-      command.vehiclePlateNumber,
-    )
+    if (!fleet) throw new Error(`Unknown fleet ID: ${command.fleetId}`)
 
+    const vehicle: Vehicle | null =
+      await this.vehicleRepository.findByPlateNumber(command.vehiclePlateNumber)
     if (!vehicle)
       throw new Error(
         `Unknown vehicle PlateNumber: ${command.vehiclePlateNumber}`,
       )
-
-    if (!fleet) throw new Error(`Unknown fleet ID: ${command.fleetId}`)
 
     if (!fleet.hasVehicle(vehicle))
       throw new Error(
         `Vehicle is not registered in this fleet: ${vehicle.plateNumber}`,
       )
 
+    const location = new Location(
+      command.latitude,
+      command.longitude,
+      command.altitude,
+    )
     vehicle.park(location)
-    this.vehicleRepository.save(vehicle)
+    await this.vehicleRepository.save(vehicle)
   }
 }
