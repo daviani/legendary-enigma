@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "cucumber-js",
+    "test:in-memory": "cucumber-js --tags 'not @infra'",
+    "test:infra": "cucumber-js --tags @infra",
+    "lint": "eslint src/",
+    "format": "prettier --write 'src/**/*.ts' 'features/**/*.feature' 'step-definitions/**/*.ts'"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "~12.7.0",
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^25.5.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.4.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.0.0"
+  }
+}
