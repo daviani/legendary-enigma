@@ -18,4 +18,8 @@ export class Fleet {
   hasVehicle(vehicle: Vehicle): boolean {
     return this.vehicles.some((v) => v.plateNumber === vehicle.plateNumber)
   }
+
+  getVehicles(): Vehicle[] {
+    return [...this.vehicles]
+  }
 }
