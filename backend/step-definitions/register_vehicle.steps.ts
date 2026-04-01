@@ -28,7 +28,7 @@ Given('the fleet of another user', function () {
   this.fleetRepository.save(this.otherFleet)
 })
 
-Given('I have registered this vehicle into my fleet', function () {
+Given('I have registered this vehicle into my fleet', async function () {
   const command = new RegisterVehicleCommand(
     this.myFleet.id,
     this.vehicle.plateNumber,
@@ -37,12 +37,12 @@ Given('I have registered this vehicle into my fleet', function () {
     this.fleetRepository,
     this.vehicleRepository,
   )
-  handler.handle(command)
+  await handler.handle(command)
 })
 
 Given(
   "this vehicle has been registered into the other user's fleet",
-  function () {
+  async function () {
     const command = new RegisterVehicleCommand(
       this.otherFleet.id,
       this.vehicle.plateNumber,
@@ -51,11 +51,11 @@ Given(
       this.fleetRepository,
       this.vehicleRepository,
     )
-    handler.handle(command)
+    await handler.handle(command)
   },
 )
 
-When('I register this vehicle into my fleet', function () {
+When('I register this vehicle into my fleet', async function () {
   const command = new RegisterVehicleCommand(
     this.myFleet.id,
     this.vehicle.plateNumber,
@@ -64,10 +64,10 @@ When('I register this vehicle into my fleet', function () {
     this.fleetRepository,
     this.vehicleRepository,
   )
-  handler.handle(command)
+  await handler.handle(command)
 })
 
-When('I try to register this vehicle into my fleet', function () {
+When('I try to register this vehicle into my fleet', async function () {
   const command = new RegisterVehicleCommand(
     this.myFleet.id,
     this.vehicle.plateNumber,
@@ -77,7 +77,7 @@ When('I try to register this vehicle into my fleet', function () {
     this.vehicleRepository,
   )
   try {
-    handler.handle(command)
+    await handler.handle(command)
   } catch (e) {
     this.error = e
   }

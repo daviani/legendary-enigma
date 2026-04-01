@@ -8,7 +8,7 @@ Given('a location', function () {
   this.location = new Location(48.8566, 2.3522)
 })
 
-Given('my vehicle has been parked into this location', function () {
+Given('my vehicle has been parked into this location', async function () {
   const command = new ParkVehicleCommand(
     this.myFleet.id,
     this.vehicle.plateNumber,
@@ -19,10 +19,10 @@ Given('my vehicle has been parked into this location', function () {
     this.fleetRepository,
     this.vehicleRepository,
   )
-  handler.handle(command)
+  await handler.handle(command)
 })
 
-When('I try to park my vehicle at this location', function () {
+When('I try to park my vehicle at this location', async function () {
   const command = new ParkVehicleCommand(
     this.myFleet.id,
     this.vehicle.plateNumber,
@@ -34,13 +34,13 @@ When('I try to park my vehicle at this location', function () {
     this.vehicleRepository,
   )
   try {
-    handler.handle(command)
+    await handler.handle(command)
   } catch (e) {
     this.error = e
   }
 })
 
-When('I park my vehicle at this location', function () {
+When('I park my vehicle at this location', async function () {
   const command = new ParkVehicleCommand(
     this.myFleet.id,
     this.vehicle.plateNumber,
@@ -51,7 +51,7 @@ When('I park my vehicle at this location', function () {
     this.fleetRepository,
     this.vehicleRepository,
   )
-  handler.handle(command)
+  await handler.handle(command)
 })
 
 Then(
