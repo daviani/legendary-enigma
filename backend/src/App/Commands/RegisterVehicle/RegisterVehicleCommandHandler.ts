@@ -10,17 +10,19 @@ export class RegisterVehicleCommandHandler {
     private readonly vehicleRepository: VehicleRepository,
   ) {}
 
-  handle(command: RegisterVehicleCommand): void {
-    const fleet: Fleet | null = this.fleetRepository.findById(command.fleetId)
+  async handle(command: RegisterVehicleCommand): Promise<void> {
+    const fleet: Fleet | null = await this.fleetRepository.findById(
+      command.fleetId,
+    )
 
     if (!fleet) throw new Error(`Unknown fleet ID: ${command.fleetId}`)
 
-    let vehicle = this.vehicleRepository.findByPlateNumber(
+    let vehicle = await this.vehicleRepository.findByPlateNumber(
       command.vehiclePlateNumber,
     )
     if (!vehicle) vehicle = new Vehicle(command.vehiclePlateNumber)
     fleet.addVehicle(vehicle)
-    this.vehicleRepository.save(vehicle)
-    this.fleetRepository.save(fleet)
+    await this.vehicleRepository.save(vehicle)
+    await this.fleetRepository.save(fleet)
   }
 }
